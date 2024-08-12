@@ -1,0 +1,30 @@
+version: "1"
+
+package:
+  id: io.github.dlt-viewer
+  name: dlt-viewer
+  version: 2.26.0.0
+  kind: app
+  description: |
+    Diagnostic Log and Trace viewing program
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+command:
+  - /opt/apps/io.github.dlt-viewer/files/bin/dlt-viewer
+
+sources:
+  - kind: git
+    url: https://github.com/COVESA/dlt-viewer.git
+    version: master
+    commit: cd2d1ffb963c8dcfac42db3a4baf96fa05518de5
+
+build: |
+  cd /project/linglong/sources/dlt-viewer.git/
+  git apply /project/patches/0001-fix-path.patch
+  cmake -Bbuild \
+        -DCMAKE_INSTALL_PREFIX=${PREFIX} 
+
+  cmake --build build
+  cmake --build build --target install
